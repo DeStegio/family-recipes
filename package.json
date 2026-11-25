@@ -15,7 +15,9 @@
     "db:seed": "tsx scripts/seed.ts",
     "db:user": "tsx scripts/user.ts",
     "backup:originals": "tsx scripts/export-originals.ts",
-    "backup:restore-originals": "tsx scripts/restore-originals.ts"
+    "backup:restore-originals": "tsx scripts/restore-originals.ts",
+    "demo:build": "vite build --config pages-demo/vite.config.ts",
+    "demo:preview": "vite preview --config pages-demo/vite.config.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1177.0",
@@ -44,6 +46,7 @@
     "tailwindcss": "^4.3.5",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
+    "vite": "^8.3.8",
     "vitest": "^5.1.2"
   },
   "private": true

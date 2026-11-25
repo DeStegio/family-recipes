@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-export function Shell({ children, demo, editor, authenticated }: {
-  children: React.ReactNode; demo?: boolean; editor?: boolean; authenticated?: boolean;
+export function Shell({ children, demo, editor, authenticated, demoNotice = "Δοκιμαστικά δεδομένα · Ιδιωτικό οικογενειακό βιβλίο" }: {
+  children: React.ReactNode; demo?: boolean; editor?: boolean; authenticated?: boolean; demoNotice?: string;
 }) {
   return <>
     <header className="site-header">
@@ -14,7 +14,7 @@ export function Shell({ children, demo, editor, authenticated }: {
         {authenticated && <form className="session-action" method="post" action="/api/session/logout"><button>Έξοδος</button></form>}
       </nav>
     </header>
-    {demo && <div className="ribbon">Δοκιμαστικά δεδομένα · Ιδιωτικό οικογενειακό βιβλίο</div>}
+    {demo && <div className="ribbon">{demoNotice}</div>}
     {children}
   </>;
 }

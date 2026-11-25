@@ -4,8 +4,8 @@ import Link from "next/link";
 import { categories, matchesRecipe, type Category, type Recipe } from "@/domain/recipe";
 import { Favorite, useFavorites } from "./favorites";
 
-export function Catalog({ recipes, query, view, category }: {
-  recipes: Recipe[]; query: string; view: string; category?: Category;
+export function Catalog({ recipes, query, view, category, searchAction = "/" }: {
+  recipes: Recipe[]; query: string; view: string; category?: Category; searchAction?: string;
 }) {
   const favorites = useFavorites();
   const home = !query && view === "home" && !category;
@@ -17,7 +17,7 @@ export function Catalog({ recipes, query, view, category }: {
   return <main id="main" className="container catalog">
     {home && <p className="eyebrow">Το δικό μας τετράδιο</p>}
     <h1>{title}</h1>
-    <form action="/" className="search" role="search">
+    <form action={searchAction} className="search" role="search">
       <label htmlFor="recipe-search" className="sr-only">Αναζήτηση συνταγών</label>
       <input id="recipe-search" name="q" type="search" defaultValue={query} placeholder="Γράψε μια συνταγή ή ένα υλικό…" maxLength={160} />
       <button className="primary">Αναζήτηση</button>

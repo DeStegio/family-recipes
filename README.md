@@ -14,6 +14,12 @@ npm run dev
 
 Άνοιξε το [http://localhost:3000](http://localhost:3000). Αναζήτησε «μηλοπιτα», άνοιξε τη Μηλόπιτα και πάτησε «Έναρξη μαγειρέματος». Στο δεύτερο βήμα άνοιξε το χειρόγραφο, άλλαξε πηγή και κλείσε την προβολή. Τα στιγμιότυπα χειρόγραφων είναι δοκιμαστικά και προέρχονται από το Figma.
 
+## Επίδειξη στο GitHub Pages
+
+Η στατική επίδειξη χτίζεται με `npm run demo:build` και ανοίγει τοπικά με `npm run demo:preview` στη διαδρομή `/family-recipes/`. Χρησιμοποιεί τις τρεις δοκιμαστικές συνταγές και τις τέσσερις ενδεικτικές εικόνες του repo.
+
+Στο [Settings → Pages](https://github.com/DeStegio/family-recipes/settings/pages), επίλεξε **GitHub Actions** στο **Build and deployment → Source**. Στο [Actions → Publish sample recipe demo to GitHub Pages](https://github.com/DeStegio/family-recipes/actions/workflows/pages.yml), πάτησε **Run workflow** για το `main`. Η προβλεπόμενη διεύθυνση είναι `https://destegio.github.io/family-recipes/`. Η ενεργοποίηση Pages στο συγκεκριμένο ιδιωτικό repo χρειάζεται υποστηριζόμενο πλάνο GitHub. [Δημοσίευση μέσω GitHub Actions](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+
 ## Ιδιωτική λειτουργία για τοπική δοκιμή
 
 Χρειάζεσαι Docker Desktop με Linux containers. Το Compose ξεκινά PostgreSQL στη θύρα 55432 και ιδιωτικό SeaweedFS S3 στη 54566, δεμένες στο loopback. Σταμάτησε τυχόν ανοιχτό dev server πριν αλλάξεις λειτουργία.
