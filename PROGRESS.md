@@ -34,7 +34,7 @@
 ## GitHub Pages
 
 - [x] Προστέθηκε στατικό build με ενδεικτικά δεδομένα και χειροκίνητο workflow δημοσίευσης στο `DeStegio/family-recipes`. Η αναζήτηση, το μαγείρεμα και τα ενδεικτικά χειρόγραφα επαληθεύτηκαν στο Chromium στα 320 px από τη στατική διαδρομή `/family-recipes/`.
-- [ ] Ενεργοποίηση Pages στο ιδιωτικό repo. Το GitHub API επέστρεψε 422 επειδή το τρέχον πλάνο δεν υποστηρίζει Pages για το repo. Με ενεργό Pages, το workflow δημοσιεύει στη διαδρομή `/family-recipes/`.
+- [x] Δημοσιεύτηκε η δημόσια επίδειξη στο ίδιο repo και επαληθεύτηκε στο Chromium στα 320 px από την πραγματική διεύθυνση. Το GitHub αναφέρει δημόσια ορατότητα για το repo. [Επίδειξη](https://destegio.github.io/family-recipes/) · [Εκτέλεση δημοσίευσης](https://github.com/DeStegio/family-recipes/actions/runs/45693015508)
 
 ## Εκκρεμότητες και προτεινόμενα μικρά PR
 
