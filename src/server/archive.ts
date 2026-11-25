@@ -68,14 +68,14 @@ export async function reviewDetail(id: string) {
 }
 
 export async function findOriginal(recipeId: string, sourceId: string, user: User, review: boolean) {
-  const { rows } = await db().query<{ object_key: string }>(`
-    SELECT o.object_key FROM original o JOIN source_version s ON s.original_id = o.id
+  const { rows } = await db().query<{ object_key: string; content_type: string }>(`
+    SELECT o.object_key, o.content_type FROM original o JOIN source_version s ON s.original_id = o.id
     JOIN recipe r ON r.id = s.recipe_id
     WHERE r.id = $1 AND o.id::text = $2 AND (
       ($3 AND s.revision = r.head)
       OR (NOT $3 AND r.linked_to IS NULL AND s.revision = r.published)
     )`, [recipeId, sourceId, review && canEdit(user)]);
-  return rows[0]?.object_key;
+  return rows[0];
 }
 
 function validateDraft(draft: Draft) {

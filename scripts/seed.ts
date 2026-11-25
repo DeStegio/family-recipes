@@ -48,7 +48,7 @@ async function seed() {
       issues: item.issues.map((issue) => ({ ...issue, id: randomUUID(),
         evidence: issue.evidence.map((part) => ({ ...part, sourceId: sourceId(part.sourceId) })) })),
     };
-    const files = await Promise.all(item.sources.map(async (source) => prepareOriginal(await readFile(`fixtures/images/${source.id}.png`))));
+    const files = await Promise.all(item.sources.map(async (source) => prepareOriginal(await readFile(`fixtures/images/${source.id}.jpg`))));
     await createDraft(id, users[0], draft, files);
   }
   const complete = await reviewDetail(seedIds[0]);

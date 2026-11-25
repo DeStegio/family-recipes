@@ -35,7 +35,7 @@ test("the owner provisions a reader and a confirmed recipe becomes available", a
       steps: [{ title: "Βάλε το νερό", text: "Ρίξε το νερό στο μπολ.", sourceId: source, ingredientIds: [] }],
       issues: [],
     };
-    const multipart = { id, draft: JSON.stringify(recipe), photos: { name: "sample.png", mimeType: "image/png", buffer: await readFile("fixtures/images/apple-1.png") } };
+    const multipart = { id, draft: JSON.stringify(recipe), photos: { name: "sample.jpg", mimeType: "image/jpeg", buffer: await readFile("fixtures/images/apple-1.jpg") } };
     expect((await admin.post("/api/recipes", { multipart, headers })).status()).toBe(201);
     expect((await reader.get("/api/recipes/" + id)).status()).toBe(404);
     const loaded = await (await admin.get("/api/review/" + id)).json();

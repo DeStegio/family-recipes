@@ -7,6 +7,6 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   if (!demoMode() || !["apple-1", "apple-2", "sout-1", "sout-2"].includes(id)) {
     return new Response(null, { status: 404 });
   }
-  const bytes = await readFile(resolve("fixtures/images", id + ".png"));
-  return new Response(new Uint8Array(bytes), { headers: { "Content-Type": "image/png", "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff" } });
+  const bytes = await readFile(resolve("fixtures/images", id + ".jpg"));
+  return new Response(new Uint8Array(bytes), { headers: { "Content-Type": "image/jpeg", "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff" } });
 }

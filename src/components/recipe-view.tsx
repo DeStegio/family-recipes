@@ -21,7 +21,9 @@ export function IssueList({ recipe }: { recipe: Pick<Recipe, "issues" | "sources
   </section>;
 }
 
-export function Viewer({ recipe, first, onClose }: { recipe: Recipe; first: number; onClose: () => void }) {
+export function Viewer({ recipe, first, onClose, allowDownload }: {
+  recipe: Recipe; first: number; onClose: () => void; allowDownload?: boolean;
+}) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [index, setIndex] = useState(first);
   const [tab, setTab] = useState<"photo" | "text">("photo");
@@ -86,6 +88,7 @@ export function Viewer({ recipe, first, onClose }: { recipe: Recipe; first: numb
           </div>
           {source.description && <p className="muted">{source.description}</p>}
         </div>
+        {allowDownload && <a className="text-link" href={`${source.url}${source.url.includes("?") ? "&" : "?"}download=1`}>Λήψη πρωτοτύπου</a>}
       </> : <section className="paper"><h4>Πιστή μεταγραφή · Πηγή {index + 1}</h4>
         <p className="transcription">{source.transcription || "Η μεταγραφή εκκρεμεί."}</p></section>}
     </div>
@@ -246,6 +249,6 @@ export function RecipeView({ recipe, header, editor }: { recipe: Recipe; header:
         <IssueList recipe={recipe} />
       </main>
     </>}
-    {viewer !== null && <Viewer recipe={recipe} first={viewer} onClose={closeSource} />}
+    {viewer !== null && <Viewer recipe={recipe} first={viewer} onClose={closeSource} allowDownload={editor} />}
   </>;
 }

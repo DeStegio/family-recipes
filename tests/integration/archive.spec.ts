@@ -6,7 +6,7 @@ import type { Draft } from "../../src/domain/review";
 const origin = "http://127.0.0.1:3133";
 const password = "LocalRecipeSample2026!";
 const example = "bb8cb31b-97f8-4ef6-83c4-0f3a7b832ecd";
-const files = ["fixtures/images/sout-1.png", "fixtures/images/sout-2.png"];
+const files = ["fixtures/images/sout-1.jpg", "fixtures/images/sout-2.jpg"];
 const hash = (bytes: Buffer) => createHash("sha256").update(bytes).digest("hex");
 
 async function loginRequest(client: APIRequestContext, role: string) {
@@ -70,12 +70,27 @@ test("an administrator imports conflicting originals and readers can only open p
   const original = await request.get(signedUrl.toString());
   expect(original.status()).toBe(200);
   expect(hash(await original.body())).toBe(hash(await readFile(files[0])));
+  await page.getByRole("button", { name: "Άνοιγμα φωτογραφίας" }).click();
+  const viewer = page.getByRole("dialog");
+  const download = viewer.getByRole("link", { name: "Λήψη πρωτοτύπου" });
+  await expect(download).toHaveAttribute("href", reviewUrl + "&download=1");
+  const downloaded = await admin.get((await download.getAttribute("href"))!);
+  expect(downloaded.status()).toBe(200);
+  expect(downloaded.headers()["content-disposition"]).toBe(`attachment; filename="prototypo-${firstSource}.jpg"`);
+  expect(hash(await downloaded.body())).toBe(hash(await readFile(files[0])));
+  await viewer.getByRole("button", { name: "Κλείσιμο" }).click();
 
   const reader = await playwright.request.newContext({ baseURL: origin });
   try {
     await loginRequest(reader, "reader");
     expect((await reader.get("/api/recipes")).status()).toBe(200);
-    expect((await reader.get("/api/recipes/" + example)).status()).toBe(200);
+    const published = await reader.get("/api/recipes/" + example);
+    expect(published.status()).toBe(200);
+    const publishedSource = (await published.json()).sources[0].url;
+    const restoredImage = await reader.get(publishedSource);
+    expect(restoredImage.status()).toBe(200);
+    expect(hash(await restoredImage.body())).toBe(hash(await readFile("fixtures/images/apple-1.jpg")));
+    expect((await reader.get(publishedSource + "?download=1")).status()).toBe(403);
     expect((await reader.get("/api/recipes/" + id)).status()).toBe(404);
     expect((await reader.get("/api/review/" + id)).status()).toBe(403);
     expect((await reader.get(reviewUrl)).status()).toBe(403);
@@ -108,7 +123,7 @@ test("linking a duplicate preserves previous publications and both photos", asyn
       title: "Μηλόπιτα", category: "sweets", aliases: [], sources: [{ id: sourceId, transcription: "Νέα πηγή για τη μηλόπιτα" }],
       ingredients: [], steps: [], issues: [],
     };
-    const photo = { name: "image.png", mimeType: "image/png", buffer: await readFile(files[0]) };
+    const photo = { name: "image.jpg", mimeType: "image/jpeg", buffer: await readFile(files[0]) };
     const multipart = { id: recipeId, draft: JSON.stringify(draft), photos: photo };
     expect((await owner.post("/api/recipes", { headers: { Origin: origin }, multipart })).status()).toBe(201);
     expect((await owner.post("/api/recipes", { headers: { Origin: origin }, multipart })).status()).toBe(201);

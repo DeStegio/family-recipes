@@ -117,7 +117,9 @@ function ReviewFields({ draft, update, locked }: { draft: Draft; update: (draft:
   </section>;
 }
 
-function SourcePanel({ draft, update, urls }: { draft: Draft; update: (draft: Draft) => void; urls: string[] }) {
+function SourcePanel({ draft, update, urls, persisted }: {
+  draft: Draft; update: (draft: Draft) => void; urls: string[]; persisted: boolean;
+}) {
   const [index, setIndex] = useState(0);
   const [open, setOpen] = useState(false);
   const current = Math.min(index, draft.sources.length - 1);
@@ -144,7 +146,7 @@ function SourcePanel({ draft, update, urls }: { draft: Draft; update: (draft: Dr
           onChange={(event) => update({ ...draft, sources: draft.sources.map((item, position) => position === current ? { ...item, description: event.target.value } : item) })} /></label>
       </div>
     </div>
-    {open && <Viewer recipe={recipe} first={current} onClose={() => setOpen(false)} />}
+    {open && <Viewer recipe={recipe} first={current} onClose={() => setOpen(false)} allowDownload={persisted} />}
   </section>;
 }
 
@@ -178,7 +180,7 @@ function Comparison({ draft, id, candidates, target, setTarget }: {
         <button type="button" onClick={() => setGallery(recipe)}>Δες τις πηγές · {recipe.sources.length}</button>
       </article>)}</div>
     </>}
-    {gallery && <Viewer recipe={gallery} first={0} onClose={() => setGallery(null)} />}
+    {gallery && <Viewer recipe={gallery} first={0} onClose={() => setGallery(null)} allowDownload />}
   </section>;
 }
 
@@ -257,7 +259,7 @@ export function Editor({ initial = blank, record, candidates = [] }: {
       {selection.length > 0 && <p>{selection.length} φωτογραφίες επιλέχθηκαν. Για άλλη επιλογή, ξεκίνησε νέα εισαγωγή.</p>}
     </section>}
     {draft.sources.length > 0 && <>
-      <SourcePanel draft={draft} update={update} urls={record ? draft.sources.map((source) => `/api/recipes/${record.id}/sources/${source.id}?review=1`) : previews} />
+      <SourcePanel draft={draft} update={update} persisted={!!record} urls={record ? draft.sources.map((source) => `/api/recipes/${record.id}/sources/${source.id}?review=1`) : previews} />
       {record && <IssueList recipe={{ ...draft, sources: draft.sources.map((source) => ({ ...source, url: "" })) }} />}
       <StructuredFields draft={draft} update={update} />
       <ReviewFields draft={draft} update={update} locked={new Set(initial.issues.filter((issue) => issue.essential).map((issue) => issue.id))} />

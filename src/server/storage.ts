@@ -42,7 +42,10 @@ export async function putOriginal({ bytes, ...original }: Prepared): Promise<Ori
   return original;
 }
 
-export async function imageLink(key: string) {
+export async function imageLink(key: string, filename?: string) {
   const { bucket, client } = storage();
-  return getSignedUrl(client, new GetObjectCommand({ Bucket: bucket, Key: key }), { expiresIn: 60 });
+  const object = new GetObjectCommand({
+    Bucket: bucket, Key: key, ResponseContentDisposition: filename && `attachment; filename="${filename}"`,
+  });
+  return getSignedUrl(client, object, { expiresIn: 60 });
 }
